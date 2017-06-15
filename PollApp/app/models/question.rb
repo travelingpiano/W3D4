@@ -36,9 +36,10 @@ class Question < ApplicationRecord
   end
 
   def results
-    answerchoices = answer_choices.select("answer_choices.text,COUNT(responses.*) as counts")
-                                  .left_joins(:responses)
-                                  .group("answer_choices.text")
+    answerchoices = answer_choices
+      .select("answer_choices.text,COUNT(responses.*) as counts")
+      .left_joins(:responses)
+      .group("answer_choices.text")
     results = {}
     answerchoices.each do |choice|
       results[choice.text] = choice.counts

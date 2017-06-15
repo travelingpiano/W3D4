@@ -11,10 +11,14 @@ end
 
 def golden_age
   # Find the decade with the highest average movie score.
-  Movie
-    .select(:yr)
-    .group(:yr)
-    .order("AVG(score)")
+  result = Movie.select("(yr/10*10) AS decade")
+    .group("decade")
+    .order("AVG(score) DESC")
+    .limit(1)
+    # .pluck("(yr/10*10) AS decade").last
+  result.each do |yearz|
+    return yearz['decade']
+  end
 end
 
 def costars(name)
